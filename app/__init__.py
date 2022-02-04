@@ -23,9 +23,7 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp,url_prefix='/api')
 
-    #swagger endpoint
     swagger_url = '/swagger'
-    #swagger file to be parsed for build Documentation
     api_url = '/static/swagger.json'
     swagger_blueprint = get_swaggerui_blueprint(swagger_url,api_url,config={'app_name':"My Library"})
     app.register_blueprint(swagger_blueprint, url_prefix=swagger_url)
