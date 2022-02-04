@@ -19,13 +19,19 @@ def create_app(config_class=Config):
     login.init_app(app)
     with app.app_context():
         db.create_all()
+        # from app.models import User
+        # user = User()
+        # user.username = 'userflask'
+        # user.set_password('userflask')
+        # db.session.add(user)
+        # db.session.commit()
 
     from app.api import bp as api_bp
     app.register_blueprint(api_bp,url_prefix='/api')
 
     swagger_url = '/swagger'
     api_url = '/static/swagger.json'
-    swagger_blueprint = get_swaggerui_blueprint(swagger_url,api_url,config={'app_name':"My Library"})
+    swagger_blueprint = get_swaggerui_blueprint(swagger_url,api_url,config={'app_name':"Gira"})
     app.register_blueprint(swagger_blueprint, url_prefix=swagger_url)
 
     return app
