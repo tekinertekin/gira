@@ -21,3 +21,20 @@ def get_projects():
     per_page = min(request.args.get('per_page',10,type=int),100)
     data = Project.to_collection_dict(Project.query,page,per_page,'api.get_projects')
     return jsonify(data)
+
+@bp.route('/project', methods=['POST'])
+@token_auth.login_required
+def create_project():
+    data = request.get_json() or {}
+    if 'title' not in data:
+        return bad_request('must include title field')
+    if Project.query.filter_by(title=data["title"]).first():
+        return bad_request(f'Project {data["title"]} already present at database')
+    project = Project()
+    project.from_dict(data=data)
+    db.session.add(project)
+    db.session.commit()
+    response = jsonify(project.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('api.get_project', title=project.title)
+    return response

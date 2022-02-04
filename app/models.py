@@ -110,6 +110,9 @@ class Project(PaginatedAPIMixin,db.Model):
             'user_id':self.user_id,
             'start_time':str(self.start_time),
             'end_time':str(self.end_time),
+            '_links': {
+                'self': url_for('api.get_project',title=self.title)
+            }
         }
         return data
 

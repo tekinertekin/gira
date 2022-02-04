@@ -1,0 +1,193 @@
+{
+    "openapi":"3.0.0",
+    "info": {
+	    "description" : "Gira RestAPI",
+	    "version" : "1.0.0",
+	    "title" : "Gira",
+	    "license" : {
+		    "name" : "GPLv3",
+		    "url":"https://www.gnu.org/licenses/gpl-3.0.html"
+	    }
+    },
+    "servers": [
+        {
+            "url" : "/"
+        }
+    ],
+    "tags" : [
+	{
+        "name" : "Project Request",
+	    "description" : "API for requesting and return project requests"
+        }
+    ],
+    "paths" : {
+        "/api/project/{title}" : {
+	     "parameters": [
+	         {
+              "name" : "title",
+		      "in" : "path",
+		      "required": true,
+		      "description" : "Project title that we want to match.",
+		      "type": "string"
+	         }
+	     ],
+             "get" : {
+	         "tags" : ["Project Request"],
+		 "summary" : "Return a given Project Request",
+		 "responses" : {
+		     "200" : {
+		         "description": "OK",
+			 "schema": {
+			     "$ref" : "#/components/schemas/projectRequest"
+			 }
+		     }
+		 }
+	     },
+             "put" : {
+                 "summary" : "Edit Project request by title",
+                 "tags" : ["Project Request"],
+                 "parameters" : [
+                     {
+                         "in" : "path",
+                         "title" : "title",
+                         "required" : true,
+                         "description" : "Project Request title",
+                         "schema" : {
+                             "$ref" : "#/components/schemas/title"
+                         }
+                     }
+                 ],
+                 "requestBody" : {
+                      "description" : "Project Request Object",
+                      "required" : true,
+                      "content" : {
+                          "application/json" : {
+                               "schema" : {
+                                   "$ref" : "#/components/schema/projectRequestPostBody"
+                               }
+                           }
+                      }
+                 },
+                 "produces" : [
+                     "application/json"
+                 ],
+                 "responses" : {
+                     "200" : {
+                         "description" : "OK",
+                         "schema": {
+                             "$ref" : "#/components/schemas/projectRequest"
+                         }
+                     },
+                     "400" : {
+                         "description" : "Failed. Bad Post Data."
+                     }
+                 }
+             }
+        },
+        "/api/projects" : {
+	     "get" : {
+	         "tags" : ["Project Requests"],
+		 "summary" : "Return all Project Requests",
+		 "responses" : {
+		     "200" : {
+		         "description": "OK",
+			 "schema": {
+			     "$ref" : "#/components/schemas/projectRequests"
+			 }
+		     }
+		 }
+	     }
+        },
+        "/api/project" : {
+	     "post" : {
+	         "tags" : ["Create new Project"],
+		 "summary" : "Create a new Project Request.",
+                 "requestBody" : {
+                     "description" : "Project Request Post Object",
+                     "required" : true,
+                     "content" : {
+                         "application/json" : {
+                             "schema" : {
+                                 "$ref" : "#/components/schemas/projectRequestPostBody"
+                             }
+                         }
+                     }
+                 },
+		 "responses" : {
+		     "201" : {
+		         "description": "OK",
+			 "schema": {
+			     "$ref" : "#/components/schemas/projectRequest"
+			 }
+		     },
+                     "400" : {
+                         "description" : "Failed. Bad post data."
+                     }
+		 }
+	     }
+        }
+    },
+    "components":{
+        "schemas" : {
+	    "title" : {
+	        "properties" : {
+		    "uuid": {
+		        "type" : "string"
+		    }
+		    }
+	    },
+            "success" : {
+                "type" : "object",
+                "properties" : {
+	            "success" : {
+                         "type" : "boolean",
+                         "format" : "boolean"              
+		    }
+	        }
+            },
+            "projectRequestPostBody" : {
+                "type": "object",
+                "properties" : {
+	            "title": {
+                    "type" : "string",
+		            "format" : "string"
+		        }
+	        }
+	    },
+	    "projectRequest" : {
+		"type" : "object",
+		"properties" :{
+		    "title" : {
+		        "type" : "string",
+			    "format" : "string"
+		    }
+		}
+            },
+            "projectRequests" : {
+                "type" : "object",
+                "properties" : {
+                    "projectRequest": {
+                        "type" : "object",
+                        "additionalProperties" : {
+                            "$ref" : "#/components/schemas/projectRequest"
+                        }
+                    } 
+                }
+            }    
+        },
+	"securitySchemes" : {
+            "BearerAuth" : {
+                "type" : "http",
+                "description" : "Bearer Authentication Token",
+                "scheme" : "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security" : [
+	{
+            "BearerAuth":[]
+        }
+    ]
+ }
+

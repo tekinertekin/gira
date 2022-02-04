@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 from flask_swagger_ui import get_swaggerui_blueprint
+from pathlib import Path
 
 
 db = SQLAlchemy()
@@ -25,8 +26,11 @@ def create_app(config_class=Config):
     app.register_blueprint(api_bp,url_prefix='/api')
 
     swagger_url = '/swagger'
-    api_url = '/static/swagger.json'
+    api_url = "/static/swagger.json"
+    #'/static/swagger.json'
     swagger_blueprint = get_swaggerui_blueprint(swagger_url,api_url,config={'app_name':"Gira"})
     app.register_blueprint(swagger_blueprint, url_prefix=swagger_url)
 
     return app
+
+from app import models
