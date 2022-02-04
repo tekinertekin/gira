@@ -1,3 +1,4 @@
+import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -19,12 +20,6 @@ def create_app(config_class=Config):
     login.init_app(app)
     with app.app_context():
         db.create_all()
-        # from app.models import User
-        # user = User()
-        # user.username = 'userflask'
-        # user.set_password('userflask')
-        # db.session.add(user)
-        # db.session.commit()
 
     from app.api import bp as api_bp
     app.register_blueprint(api_bp,url_prefix='/api')
