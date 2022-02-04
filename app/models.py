@@ -94,7 +94,7 @@ class Project(PaginatedAPIMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255),index=True,unique=True)
     summary = db.Column(db.String(255),index=True,unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('author.id', ondelete="CASCADE"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
 
